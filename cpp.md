@@ -82,7 +82,8 @@ int main() {
 
 #### Qualifiers
 
-**Const** prohibits any changes to variable after intialization. By default a `const` variable is local to the file it is initialized in.
+##### Const
+ prohibits any changes to variable after intialization. By default a `const` variable is local to the file it is initialized in.
 
 ```cpp
 const int buf_size = 512;
@@ -102,6 +103,35 @@ where `extern` signals to the compiler, that the variable is initialized in anot
 
 > Remember: we can bind a reference to an object of a const type, but we can't change the object to which the reference is bound. For more info, 2.4.1/2 p. 217 in "C++ Primer"
 
+**Constexpr and Constant Expressions** 
+A *constant expressions* is an expressions whose value cannot be changed and that can evaluated at compile time. A `const` object that is initialized from a *constant expression* is also a constant expression.
+
+```cpp
+const int val = 5;              // constant expression
+int vals = 6;                   // not a constant expression
+const int valss = get_val()     // not a constant expression! Value not clear at compile time
+``` 
+In C++1x, we can use the keyword `constexpr` explicitely, to tell the compiler that the variable is implicitly const
+
+```cpp
+constexpr int val = 5;          // ok
+constexpr int vals = val + 1;   // ok
+constexpr int valss = get_val() // ok, if get_val() is a constexpr function
+```
+>Remember: “variables defined inside a function ordinarily are not stored at a fixed address. Hence, we cannot use a constexpr pointer to point to such variables.”
+
+With pointers, `constexpr` behaves a little different
+
+```cpp
+const int *p = nullptr;         // p is a pointer to a const int
+constexpr int *q = nullptr;     // q is a const pointer to int 
+```
+“ The difference is a consequence of the fact that constexpr imposes a top-level const [...] on the objects it defines.” More examples
+
+```cpp
+constexpr int i = 42;           // defines const int i
+constexpr const int *p = &i;    // defines constant pointer to const int
+```
 
 #### Naming Conventions
 Variables should 
@@ -132,7 +162,27 @@ Good to know: `true` and `false` are literals of type bool.
 ...		
 ```
 
-### Type Conversions
+### Types
+
+#### Defining types
+A `type alias` is a name synonymous with another type, e.g.
+
+```cpp
+typdef double wages;        // defines wages to be synonymous to double
+wages mark = 5000;
+```
+Since C++1x you can use an `alias declaration`, e.g.
+
+```cpp
+using SI = Sales_item;      // SI is synonymous for Sales_item
+```
+or the `auto` type specifier, which "auto"-matically deduces the type from the initializer, e.g.
+
+```cpp
+int i = 5, j = 6;
+auto k = i + j;     // auto will produce type int
+```
+#### Types Conversions
 ```cpp
 bool b = 46;			// true, anything != 0 is true
 int i = b;			// i has value 1
@@ -186,12 +236,13 @@ for (int i = 0; i < 10; i++) {
 }
 
 // Shorter
-for (int i = 0; i < 10; i++) 
-	val += 10;
+for (int i = 0; i < 10; i++)
+    val += 10;
 	
 // The shortest
 for (int i = 0; i < 10; i++) val += 10;
 ```
+Since C++1x: `auto` iterator in vectors, maps: TODO
 
 ### if statements
 ```cpp
@@ -332,7 +383,7 @@ while (std::cin >> val)
 ```
 
 
-## Classes
+## Defining Our Own Data Structures: Classes
 Classes define custom data structures in C++. A class defines a type along with a collection of operations that are related to that type. These types can be used like built-in types when implemented correctly and smartly. 
 
 To use them, we need to know the name, where it is defined (typically the header) and what operations it supports.
@@ -359,4 +410,7 @@ extern double pi = 3.1416;		// An extern that has an initializer is 									// 
 C++ is a statically typed lanuage, meaning that types are checked at compile time.
 ## Sources
 Mostly based on "C++ Primer 5th Ed." by Stanley Lippman a.o."
+
+## TODO
+* `decltype`: p. 246 C++ Primer
 
