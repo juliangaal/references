@@ -1,4 +1,4 @@
-# C++ Refernence
+# C++ Reference
 
 ## Primitive Built-In Types
 Most important ones include
@@ -22,7 +22,7 @@ Additionally, we can use *unsigned* (represents only values greater than or equa
 * Use **double**. Float often isn't precise enough and the cost of double vs float computation is negligible.
 
 
-> **Caution: Don't mix signed and unsigend types:**
+> **Caution: Don't mix signed and unsigned types:**
 Signed values are automaically converted to unsigned and unsigned values can have unintended consequences, e.g.
 
 ```cpp
@@ -66,7 +66,6 @@ A variable with *block scope* is accessbile to the block (function, {}, for-/whi
 >Define variables where you first use them: 1.ly Better readability and 2.ly initial value will (probably) be more adequate.** 
 
 ``` cpp
-
 double x = 5; 	// accessible in entire file: avoid!
 
 int main() {
@@ -80,6 +79,29 @@ int main() {
 	return 0;
 }
 ```
+
+#### Qualifiers
+
+**Const** prohibits any changes to variable after intialization. By default a `const` variable is local to the file it is initialized in.
+
+```cpp
+const int buf_size = 512;
+buf_size = 512;             // error: attempt to write to const
+const int cus_size;         // error: const requires initialization
+```
+If you still want to use the same `const` variable across multiple files, without creating a new instance in every file, we can use keyword `extern` in both declaration and initialization,
+
+```cpp
+//file1.cpp
+extern const int buf_size = 512;
+
+//file1.h
+extern const int buf_size;
+```
+where `extern` signals to the compiler, that the variable is initialized in another file.
+
+> Remember: we can bind a reference to an object of a const type, but we can't change the object to which the reference is bound. For more info, 2.4.1/2 p. 217 in "C++ Primer"
+
 
 #### Naming Conventions
 Variables should 
@@ -119,6 +141,12 @@ double pi = i;			// pi has value 3.0
 unsigned char c1 = -1;		// Assuming 8-bit chars, char has value 255
 signed char c2 = 256;		// Value of c2 is undefined. AVOID! Compiler doesn't catch
 ```
+It's a little different for pointers! There's no automatic type conversion there. The pointer must be of the same type as the one it points to.
+
+```cpp
+int i = 42;
+double *dp = &i;		// Error!
+```
 
 #### Leftovers from C
 Remember: there's no bool type in c, only int
@@ -128,79 +156,6 @@ int i = 42;
 if(i)			// Will only evaluate to true if i != 0
 	i = 0;
 ```
-
-## Compound Types: References and Pointers
-
-### &Reference
-A **Reference** defines an alternate name for an object. A reference type "refers to" another type by using the memory address of the referenced object in question.
-
-```cpp
-int ival = 1024;
-int &refVal = ival;		// refVal refers to another ival
-int &refVal2 = 2;		// error: initializer must be object
-double pi = 
-int &refVal2 = pi;		// error: wrong type
-```
-Instead of copying the initializers value to refVal, we *bind* the reference to it's initializer. Additionally, 
->“There is *no* way to rebind a reference to refer to a different object. Because there is no way to rebind a reference, references **must** be initialized.”
-
-### *Pointer
-A **Pointer** is a compound type that "points to" another type. Unlike references, a pointer is an object in it's own right. This means
- 
- * no need to initialize
- * pointer can be assigned and copied
- * can point to *several different objects* over the span of it's lifetime
-
-A pointer holds the address of another object, which enables us to get the *content* of this pointer by dereferencing it with `*`.
-
-```cpp
-int ival = 42;
-int *pval = &ival;		
-int *rval = val;
-
-std::cout << pval << std::endl;	// will print address 0x...
-std::cout << *pval << std::endl;	// will print content (!) of address: 42
-std::cout << &ival << std::endl;	// standard reference, will print address 0x...
-```
-#### Nullpointers
-... don't point to any objects
-
-```cpp
-int *p2 = nullptr;
-int *p1 = 0;			// equivalent
-```
-
->**Advice: Initialize all pointers
-> Unitialized pointers are a common source of runtime errors and are a nightmare to debug. Define pointers after object to which it should point is definedd. For all other pointers, initialize them to nullptr**
-
-## IO
-`<iostream>` library: *istream* for *input stream* and *ostream* for *output stream*
-
-* `cin`	: standard input
-* `cout`	: standard output
-* `cerr`	: standard error
-* `clog`	: standard log
-* `endl`	: clears buffer and starts new line
-
-Istream becomes invalid if we hit an *end-of-file* or encounter an invalid input type, say string instead of int. 
-*End of file* is system dependent: Ctrl-D on Unix or Ctrl-Z on Windows
-
-### Examples
-```cpp
-std::cout << "This is an output << std::endl;
-
-// continous reading of stream
-int val;
-while (std::cin >> val) 
-	sum += value;
-
-```
-
-## Comments
-* `//`: single line comments
-* `/**/` : multi line comments, use asterix between comment pairs to visualize inner lines. 
-
->*Warning*: Comment pairs do not nest, meaning comments in comments cause compiler errors
 
 ## Operators
 ```cpp
@@ -253,6 +208,130 @@ if (x < 0)
 if (x < 0) x *= -1;
 ```
 
+
+## Compound Types: References and Pointers
+
+### &Reference
+A **Reference** defines an alternate name for an object. A reference type "refers to" another type by using the memory address of the referenced object in question.
+
+```cpp
+int ival = 1024;
+int &refVal = ival;		// refVal refers to another ival
+int &refVal2 = 2;		// error: initializer must be object
+double pi = 
+int &refVal2 = pi;		// error: wrong type
+```
+Instead of copying the initializers value to refVal, we *bind* the reference to it's initializer. Additionally, 
+>“There is *no* way to rebind a reference to refer to a different object. Because there is no way to rebind a reference, references **must** be initialized.”
+
+### *Pointer
+A **Pointer** is a compound type that "points to" another type. Unlike references, a pointer is an object in it's own right. This means
+ 
+ * no need to initialize
+ * pointer can be assigned and copied
+ * can point to *several different objects* over the span of it's lifetime
+
+A pointer holds the address of another object, which enables us to get the *content* of this pointer by dereferencing it with `*`.
+
+```cpp
+int ival = 42;
+int *pval = &ival;		
+int *rval = val;
+
+std::cout << pval << std::endl;	// will print address 0x...
+std::cout << *pval << std::endl;	// will print content (!) of address: 42
+std::cout << &ival << std::endl;	// standard reference, will print address 0x...
+
+int *fval;
+int *uval = &ival;
+fval = uval;							// fval, uval refer to same address
+std::cout << *fval << std::endl;	// 42
+```
+We can also compare two valid pointers of the same type: `==` and `!=` to type *bool*. They are equal if they hold the same address. Two objects hold the same address if 
+
+* they are both null
+* they address the same object
+* they are both pointers one past the same object
+
+#### Nullpointers
+... don't point to any objects
+
+```cpp
+int *p2 = nullptr;
+int *p1 = 0;			// equivalent
+
+std::cout << *p2 << std::endl;	// error: no content
+std::cout << p2 << std::endl;		// addr: 0x0
+
+if (p2) {}			// evaluates to false! value is 0
+if (!p2){}			// Would be used to check for nullptr
+```
+
+>**Advice: Initialize all pointers
+> Unitialized pointers are a common source of runtime errors and are a nightmare to debug. There's no way for the compiler to distinguish a valid memory address from an invalid one. 
+> Define pointers after object to which it should point is defined. For all other pointers, initialize them to nullptr**
+
+#### Void* Pointers
+Void* pointers can hold the address of any object, but the type is unknown.
+
+What can we do with it?
+
+* We can compare it to other pointers
+* return from/ pass to function
+* We **can't** use void to work on the object it points to
+
+```cpp
+double obj = 3.1416, *pd = &obj;
+void *pv = &obj;
+pv = pd;
+*pv = 8.3434;			// Error, void pointer doesn't allow value change of underlying obj!
+```
+Generally used to work on memory as memory.
+
+**Careful with compound type declarations**
+`*` refers *not* (like the appearance would suggest) to the base type `int*`, but rather to `p1`! `p2` is not affected by the pointer. It is from type `int`.
+
+```cpp
+int* p1, p2; 			// p1 is a pointer to int, p2 is an int
+```
+To make this more clear (in my opinion), use this syntax
+
+```cpp
+int *p1, p2 = 5; 	// p1 is a pointer to int, p2 is and int
+int *p2, *p3;			// p2 and p3 are pointers to int
+```
+
+Again, there's no "offical way to do it", so pick one way and use it consistently!
+
+### Pointers to Pointers
+TODO
+### References to Pointers
+TODO
+
+## IO
+`<iostream>` library: *istream* for *input stream* and *ostream* for *output stream*
+
+* `cin`	: standard input
+* `cout`	: standard output
+* `cerr`	: standard error
+* `clog`	: standard log
+* `endl`	: clears buffer and starts new line
+
+Istream becomes invalid if we hit an *end-of-file* or encounter an invalid input type, say string instead of int. 
+*End of file* is system dependent: Ctrl-D on Unix or Ctrl-Z on Windows
+
+### Examples
+```cpp
+std::cout << "This is an output << std::endl;
+
+// continous reading of stream
+int val;
+while (std::cin >> val) 
+	sum += value;
+
+```
+
+
 ## Classes
 Classes define custom data structures in C++. A class defines a type along with a collection of operations that are related to that type. These types can be used like built-in types when implemented correctly and smartly. 
 
@@ -268,6 +347,12 @@ extern double pi = 3.1416;		// An extern that has an initializer is 									// 
 ```
 
 >**Note**: **Variables must be defined exactly once but can be declared many times.** 
+
+## Comments
+* `//`: single line comments
+* `/**/` : multi line comments, use asterix between comment pairs to visualize inner lines. 
+
+>*Warning*: Comment pairs do not nest, meaning comments in comments cause compiler errors
 
 ## Key Concepts
 **Statically typed**
