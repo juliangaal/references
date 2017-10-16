@@ -154,7 +154,7 @@ Remember: there's no bool type in c, only int
 ```cpp
 int i = 42;
 if(i)			// Will only evaluate to true if i != 0
-	i = 0;
+    i = 0;
 ```
 
 ## Operators
@@ -174,14 +174,14 @@ Normally: sequential execution. Modify with:
 ### while loop
 ```cpp
 while(val <= 10) {
-	sum += 10;
+    sum += 10;
 }
 ```
 
 ### for loop
 ```cpp
 for (int i = 0; i < 10; i++) {
-	std::cout << i << std::endl;
+    std::cout << i << std::endl;
 	// More code
 }
 
@@ -199,11 +199,11 @@ int x = 1;
 // Some program
 
 if (x < 0) {
-	x *= -1;
+    x *= -1;
 }
 
-if (x < 0) 
-	x *= -1;
+if (x < 0)
+    x *= -1;
 
 if (x < 0) x *= -1;
 ```
