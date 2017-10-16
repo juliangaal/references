@@ -242,7 +242,6 @@ for (int i = 0; i < 10; i++)
 // The shortest
 for (int i = 0; i < 10; i++) val += 10;
 ```
-Since C++1x: `auto` iterator in vectors, maps: TODO
 
 ### if statements
 ```cpp
@@ -388,6 +387,29 @@ Classes define custom data structures in C++. A class defines a type along with 
 
 To use them, we need to know the name, where it is defined (typically the header) and what operations it supports.
 
+### Creating header files
+To ensure that our class definition is the same across multiple files, we tend to define classes in *header files*, usually abbreviated with `.h`, `.hpp`, `.H` or `.hxx`. 
+The most common method to make it safe to use the same header file in multiple locations is the *preprocessor*, a program that runs before the compiler and changes the source text of your program. Then the pp sees `#include` it replaces the statement with the contents of the specified header file. 
+C++ programs also use the preprocessor to define *header guards* that shield from reimportation/re-replacement of `include`-statements, e.g.
+
+```cpp
+#ifndef SALES_DATA_H
+#define SALES_DATA_H
+#include <string>
+struct Sales_data {
+    std::string bookNo;
+    unsigned units_sold = 0;
+    double revenue = 0.0;
+};
+#endif
+```
+Let's say in main, by accident (or willful destructive urges), you `#include Sales_data.h` more than once, it is only imported/included once.
+
+> Header Tips
+> - use header guards
+> - use unique name for header guards (usually class/file name)
+> - use UPPER CASE for header guard name
+
 ## Separate Compilation
 ... allows our program to be split into multiple logical parts. To support it, C++ distinguishes between declarations and definitions. </br> A *declaration* makes a variable known to the program and defines type and name. </br>A *definition* creates the associated entity by declaring it and allocating space and/or an initial value.
 
@@ -408,9 +430,13 @@ extern double pi = 3.1416;		// An extern that has an initializer is 									// 
 ## Key Concepts
 **Statically typed**
 C++ is a statically typed lanuage, meaning that types are checked at compile time.
+
+**Preprocessor** 
+A program that runs before the compiler and changes the source text of your program.
 ## Sources
 Mostly based on "C++ Primer 5th Ed." by Stanley Lippman a.o."
 
 ## TODO
 * `decltype`: p. 246 C++ Primer
+* `auto` keyword for loop iterations (vectors, maps)
 
