@@ -4,11 +4,11 @@
 Most important ones include
 
 ```cpp
-bool		boolean				NA	
-char		character				8 bits
-short 		short integer			16 bits
-int			integer				16 bits
-long 		long integer			32 bits
+bool		boolean			NA	
+char		character		8 bits
+short 		short integer		16 bits
+int		integer			16 bits
+long 		long integer		32 bits
 float		single-precision 	floating-point
 double		double-precision 	floating-point
 ```
@@ -43,10 +43,10 @@ Good to know: `true` and `false` are literals of type bool.
 
 ### Type Conversions
 ```cpp
-bool b = 46;					// true, anything != 0 is true
-int i = b;					// i has value 1
-i = 3.14;						// i has value 3: it is truncated
-double pi = i;				// pi has value 3.0
+bool b = 46;			// true, anything != 0 is true
+int i = b;			// i has value 1
+i = 3.14;			// i has value 3: it is truncated
+double pi = i;			// pi has value 3.0
 unsigned char c1 = -1;		// Assuming 8-bit chars, char has value 255
 signed char c2 = 256;		// Value of c2 is undefined. AVOID! Compiler doesn't catch
 ```
