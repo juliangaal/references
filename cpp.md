@@ -39,7 +39,7 @@ For example, we can initialize the variable u in 4 different ways
 ```cpp
 int u = 0;
 int u = {0}; 		// list initialization!
-int u{0};			// list initialization!
+int u{0};		// list initialization!
 int u(0);
 ``` 
 Curly brackets and list initialization becomes important when used with built-in types: The compiler won't let us initialize if/because it could lead to loss of information
@@ -47,7 +47,7 @@ Curly brackets and list initialization becomes important when used with built-in
 ```cpp
 double pi = 3.1434345682...	
 int a{pi}, b = {pi};			// error: narrowing conversion
-int c(pi), b = pi;				// ok, but value will be truncated
+int c(pi), b = pi;			// ok, but value will be truncated
 ```
 
 #### Default Initialization
@@ -288,13 +288,13 @@ int ival = 42;
 int *pval = &ival;		
 int *rval = val;
 
-std::cout << pval << std::endl;	// will print address 0x...
+std::cout << pval << std::endl;		// will print address 0x...
 std::cout << *pval << std::endl;	// will print content (!) of address: 42
 std::cout << &ival << std::endl;	// standard reference, will print address 0x...
 
 int *fval;
 int *uval = &ival;
-fval = uval;							// fval, uval refer to same address
+fval = uval;				// fval, uval refer to same address
 std::cout << *fval << std::endl;	// 42
 ```
 We can also compare two valid pointers of the same type: `==` and `!=` to type *bool*. They are equal if they hold the same address. Two objects hold the same address if 
@@ -311,7 +311,7 @@ int *p2 = nullptr;
 int *p1 = 0;			// equivalent
 
 std::cout << *p2 << std::endl;	// error: no content
-std::cout << p2 << std::endl;		// addr: 0x0
+std::cout << p2 << std::endl;	// addr: 0x0
 
 if (p2) {}			// evaluates to false! value is 0
 if (!p2){}			// Would be used to check for nullptr
@@ -347,7 +347,7 @@ int* p1, p2; 			// p1 is a pointer to int, p2 is an int
 To make this more clear (in my opinion), use this syntax
 
 ```cpp
-int *p1, p2 = 5; 	// p1 is a pointer to int, p2 is and int
+int *p1, p2 = 5; 		// p1 is a pointer to int, p2 is and int
 int *p2, *p3;			// p2 and p3 are pointers to int
 ```
 
@@ -414,9 +414,9 @@ Let's say in main, by accident (or willful destructive urges), you `#include Sal
 ... allows our program to be split into multiple logical parts. To support it, C++ distinguishes between declarations and definitions. </br> A *declaration* makes a variable known to the program and defines type and name. </br>A *definition* creates the associated entity by declaring it and allocating space and/or an initial value.
 
 ```cpp
-extern int i;						// declares but does not define
-int j = 0;						// declares and defines
-extern double pi = 3.1416;		// An extern that has an initializer is 									// a definition -> overrides extern 
+extern int i;				// declares but does not define
+int j = 0;				// declares and defines
+extern double pi = 3.1416;		// An extern that has an initializer is a definition -> overrides extern 
 ```
 
 >**Note**: **Variables must be defined exactly once but can be declared many times.** 
