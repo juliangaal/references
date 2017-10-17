@@ -9,6 +9,7 @@
 4. [Flow of Control](#floc)
 5. [Compound Types](#comps)
 6. [Classes](#classes)
+7. [IO](#io)
 
 <a name="built_in"></a>
 ## Primitive Built-In Types 
@@ -579,6 +580,7 @@ Istream becomes invalid if we hit an *end-of-file* or encounter an invalid input
 *End of file* is system dependent: Ctrl-D on Unix or Ctrl-Z on Windows
 
 ### Examples
+
 ```cpp
 std::cout << "This is an output << std::endl;
 
