@@ -2,12 +2,15 @@
 
 ## TOC
 1. [Built-In Types](#built_in)
-2. [Operators](#ops)
-3. [Flow of Control](#floc)
-4. [Compound Types](#comps)
-5. [Classes](#classes)
+2. [Abstract Data Types: Strings, Vectors, Arrays](#sva)
+    a. [Strings](#strings)
+    b. [Vectors](#vecs)
+3. [Operators](#ops)
+4. [Flow of Control](#floc)
+5. [Compound Types](#comps)
+6. [Classes](#classes)
 
-<span name="built_in"></span>
+<a name="built_in"></a>
 ## Primitive Built-In Types 
 Most important ones include
 
@@ -215,7 +218,84 @@ if(i)			// Will only evaluate to true if i != 0
     i = 0;
 ```
 
-<span name="ops"></span>
+<a name="sva"></a>
+## Abstract Data Types: Strings, Vectors, Arrays
+
+A vector holds a variable-length sequence of objects of a given type.
+
+### Namespace *using* Declarations
+Using a *using declarations* allows us to drop the prefix of the library we're using. It has the form `using namespace::name` e.g.
+
+```cpp
+std::string one = "one";
+
+using namespace std::string;
+string one = "one";
+```
+defines namespace and let's us access `name` directly.
+>**Warning**: Don't include namespaces in header files. Because these are imported, it may lead to naming conflicts accross libraries and are a headache to debug.
+
+Avoid too "general" namespaces like `using namespace std`, as it is very well possible that a library you imported may conflict with the resulting direct acces to `name`. If expressivness is important to you, explicitly stating the library namespace is a good practice however.
+
+<a name="string"></a>
+### String type
+A string is a variable-length sequence of characters and is part of the standard library. It must be included in the header with `#include <string>`.
+
+```cpp
+#include <string>
+using std::string;
+
+string s1;                         // initialized to empty string
+string s2 ("This is a string");    // direct init, not including the null
+string s3 = "This is a string";    // copy init
+string s4 (n, 'c');                // n number of 'c'-literals
+```
+The only difference between *direct initialization* and *indirect initialization* is that we **must** use direct initialization when we have > 1 initializers (see `s4`).
+
+#### Common string operations
+Usage   | Description
+------- | ----------- 
+`os << s`|  Writes s onto output stream os, returns os
+`is >> s`|  Reads whitespace seperated from is into s, return is
+`getline(is, s)`| Reads a line of input from is into s, return is
+`s.empty()`| Return true, if empty string
+`s.size()`| Returns number of charachters in string ('\0', too??), `string::size_type`
+`s[n]`| "Subscript": Returns reference to char of s at index n. *Caution: n unchecked - must be >= 0 && < size()*.
+`s1 + s2` or `s1.append(s2)`| String concatenation
+`s1 = s2`| Replaces contents of s1 with contents of s2
+`s1 ==/(!=) s2` or `s1.equals(s2)`| Returns true if equal
+`< <= >= >`| Comparisons 
+
+For individual character treatment, look at `cctype`-header. (p. 293, C++ Primer)
+Also, you should be using the *range for* statements introduced in c++1x. See [loops](#loops)
+
+>**Advice for using c libraries in c++**
+>C headers have the form *name.h*. The C++ versions remove the *.h* and prepend a `c`, to indicate it is part of the C library ("cname"). Use the version optimized for C++ if possible: you *could* use `ctype.h`, but you *should* `cctype`, as the names defined in `cctype` are defined in the std namespace.
+
+#### Reading and Writing
+
+```cpp
+std::cin >> s;                  // Read whitespace seperated (!) string
+std::cout << s << std::endl;    // e.g. in: Hello, World! out: Hello,
+
+std::cin >> s1 >> s2;           // in: Hello, World! out: Hello,World!
+std::cout << s1 << s2 << std::endl;
+
+while (std::cin << s)           // Unkown number of s strings
+    std::cout << s << std::endl;
+```
+Sometimes we don't want to ignore the whitespaces, for that we can use `getline`.
+
+```cpp
+while (getline(std::cin, s))
+    std::cout << s << std::endl;
+```
+>Note: `newline` is ignored
+
+<a name="vecs"></a>
+### Vector Type
+
+<a name="ops"></a>
 ## Operators 
 ```cpp
 int a = 0, b = 0;
@@ -226,11 +306,11 @@ a++;	a--;
 a /= b; 	a *= b;
 bool m = a < b;		bool n = a > b;
 ```
-<span name="floc"></span>
+<a name="floc"></a>
 ## Flow of control 
 Normally: sequential execution. Modify with:
 
-### while loop
+### while loops
 ```cpp
 while(val <= 10) {
     sum += 10;
@@ -251,7 +331,21 @@ for (int i = 0; i < 10; i++)
 // The shortest
 for (int i = 0; i < 10; i++) val += 10;
 ```
+<a name="loops"></a>
+Since C++1x, you can use *range for* statements, e.g.
 
+```cpp
+std::string s = "Hello, World!";
+for (auto c: s)     // For every character c in s, do..
+    std::cout << c << std::endl;
+```
+We have to use references, if we want to change the value of the character, though!
+ 
+```cpp
+std::string s = "Hello, World!";
+for (auto &c: s)
+    c = change_to_something();
+```
 ### if statements
 ```cpp
 int x = 1;
@@ -267,7 +361,7 @@ if (x < 0)
 if (x < 0) x *= -1;
 ```
 
-<span name="comps"></span>
+<a name="comps"></a>
 ## Compound Types: References and Pointers
 
 ### &Reference
@@ -288,7 +382,7 @@ A **Pointer** is a compound type that "points to" another type. Unlike reference
  
  * no need to initialize
  * pointer can be assigned and copied
- * can point to *several different objects* over the span of it's lifetime
+ * can point to *several different objects* over the a of it's lifetime
 
 A pointer holds the address of another object, which enables us to get the *content* of this pointer by dereferencing it with `*`.
 
@@ -367,7 +461,7 @@ TODO
 ### References to Pointers
 TODO
 
-<span name="io"></span> 
+<a name="io"></a> 
 ## IO
 `<iostream>` library: *istream* for *input stream* and *ostream* for *output stream*
 
