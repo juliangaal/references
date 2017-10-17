@@ -2,9 +2,9 @@
 
 ## TOC
 1. [Built-In Types](#built_in)
-2. [Abstract Data Types: Strings, Vectors, Arrays](#sva)
-    a. [Strings](#strings)
-    b. [Vectors](#vecs)
+2. [Abstract Data Types: Strings, Vectors, Arrays](#sva) </br>
+    a. [Strings](#strings) </br>
+    b. [Vectors](#vecs) </br>
 3. [Operators](#ops)
 4. [Flow of Control](#floc)
 5. [Compound Types](#comps)
@@ -221,8 +221,6 @@ if(i)			// Will only evaluate to true if i != 0
 <a name="sva"></a>
 ## Abstract Data Types: Strings, Vectors, Arrays
 
-A vector holds a variable-length sequence of objects of a given type.
-
 ### Namespace *using* Declarations
 Using a *using declarations* allows us to drop the prefix of the library we're using. It has the form `using namespace::name` e.g.
 
@@ -250,7 +248,7 @@ string s2 ("This is a string");    // direct init, not including the null
 string s3 = "This is a string";    // copy init
 string s4 (n, 'c');                // n number of 'c'-literals
 ```
-The only difference between *direct initialization* and *indirect initialization* is that we **must** use direct initialization when we have > 1 initializers (see `s4`).
+The only difference between *direct initialization* and *copy initialization* is that we **must** use direct initialization when we have > 1 initializers (see `s4`).
 
 #### Common string operations
 Usage   | Description
@@ -294,6 +292,91 @@ while (getline(std::cin, s))
 
 <a name="vecs"></a>
 ### Vector Type
+
+A vector holds a variable-length sequence of objects of a given type. Sometimes vectors are referred to as being a *container*, because it *contains* (duh) other types. To us it, we must include the header `#include <vector>`.
+
+```cpp
+#include <vector>
+using std::vector;
+
+// vector<TYPE> NAME;
+vector <T> v1;              // empty vector
+vector <T> v2 (v1);         // v2 is exact copy of v1
+vector <T> v2 = v1;         // equivalent
+vector <T> v3 (n, val);     // n elements with value val
+vector <T> v4 (n);          // vector with n empty elements
+vector <int> v5 {1, 2, 4};  // direct list initialization
+vector <int> v6 = {1, 2, 3};// copy list initialization, equivalent 
+vector <int> v7 = {};       // empty list initialization
+
+```
+Again, the only difference between *direct initialization* and *copy initialization* is that we **must** use direct initialization when we have > 1 initializers. Additionally, we **can't** to use regular brackets `()` with list initialization.
+
+#### Vector operations
+Adding elements is a little special case:
+```cpp
+vector<int> vec;
+for (int i = 0; i < 100; i++)
+    vec.push_back(i);
+```
+Intuitively (if you're used to C or Java), setting the size of `vec` to 100 may make sense, but **vectors grow efficiently**. That means it's usually more efficient to initialize the vector empty. The only exception to this is if all values are the same, e.g. `vector<int> vec (10, 1);`.
+
+More operations include 
+
+Operator|Description
+---|---
+`v.empty()`| True if empty
+`v.size()`| Returns number of elements `size_type`
+`v.push_back(val)`| "Appends" an element
+`v[n]`| Returns a reference to element on spot n in v
+`v1 = v2`| Replaces v1 with v2
+`v1 ==(/!=) v2`| True if equal
+`< <= >= >`| Comparison Operators
+
+See vectors in [loops](#loops)
+
+#### Getting vector values
+As usual, you can get them using the `subscript []`-operator. This is unchecked and can cause buffer overflows, as it's not checked by most compilers, however. If possible use the `range for` functionality in loops or make use of `v.size()`!
+
+A more general way is using **iterators**. They give us direct access to objects in a container, e.g. vectors or strings. Unlike pointers, iterators have type members: `begin` and `end`. “In general, we do not know (or care about) the precise type that an iterator has”.
+
+```cpp
+vector<int> vec = {1, 2, 3};
+auto b = vec.begin(), e = vec.end();
+```
+The type returned by the `begin`/`end`-operator depends on the whether they operate on is `const` or not.
+
+```cpp
+vector<int> v;
+const vector<int> cv;
+auto it1 = v.begin();       // type vector<int>::iterator
+auto it2 = cv.begin();      // type vector<int>::const_iterator
+```
+It is good practice to use type `vector<int>::const_iterator` when we want to read, but *not* write. C++1x introduced `cbegin` and `cend` for this:
+
+```cpp
+auto it1 = v.cbegin();      // both return type vector<int>::const_iterator!
+auto it2 = v.cend();
+```
+
+**Operations**
+
+Operation|Declaration
+---|---
+`*iter`|Returns a reference to the element denoted by iter
+`iter->mem` or `(*iter).mem`| Dereferences and exposed member function `mem`
+`++iter` or `--iter`| Move to next/previous adress
+`iter1 ==(!=) iter2`| True, if they point to same memory address
+
+You can use iterator pointers like this
+
+```cpp
+if (v.begin() != v.end()) {
+    auto it = v.begin();
+    *it = some_value;    
+}
+```
+>**Note: if a vector is declared, but not initialized begin() and end() iterators are the same**
 
 <a name="ops"></a>
 ## Operators 
@@ -339,13 +422,32 @@ std::string s = "Hello, World!";
 for (auto c: s)     // For every character c in s, do..
     std::cout << c << std::endl;
 ```
-We have to use references, if we want to change the value of the character, though!
+We have to use references, if we want to change the value of the character, though! 
  
 ```cpp
 std::string s = "Hello, World!";
 for (auto &c: s)
     c = change_to_something();
 ```
+Same goes for vectors
+
+```cpp
+vector<int> vec = {1, 2, 3, 4, 5}
+for (auto &v : vec)
+    v *= v;
+
+// No value change, no reference
+for (auto v : vec)
+    cout << v << endl;
+    
+// With iterator
+for (auto it = v.begin(); it != v.end() && !isspace(*it); ++it) {
+    *it = do_something_here;
+}
+```
+<a name="iterloop"></a>
+Using `subscript` is definitely unsafer for loops!
+
 ### if statements
 ```cpp
 int x = 1;
@@ -396,6 +498,8 @@ std::cout << *pval << std::endl;	// will print content (!) of address: 42
 std::cout << &ival << std::endl;	// standard reference, will print address 0x...
 
 int *fval;
+int x = (*fval).some_member_function(); // equivalent with below
+int y = fval->some_member_function();
 int *uval = &ival;
 fval = uval;				// fval, uval refer to same address
 std::cout << *fval << std::endl;	// 42
@@ -537,10 +641,18 @@ C++ is a statically typed lanuage, meaning that types are checked at compile tim
 
 **Preprocessor** 
 A program that runs before the compiler and changes the source text of your program.
+
+**Vectors Grow Efficiently**
+It is usually faster to declare a vector without an initializer, except when all elements in the vector have the same value. 
+
+**Generic Programming**
+“By routinely using iterators and !=, we don’t have to worry about the precise type of container we’re processing.” For example, in loop example [#3](#iterloop), you can see that we use `!=` rather than `<`. By using that and range/iterator based loops, we guarantee, that there can't be any buffer overflows.
+
+Excerpt From: Lippman, Stanley B. “C++ Primer, 5/e.” iBooks.  
 ## Sources
 Mostly based on "C++ Primer 5th Ed." by Stanley Lippman a.o."
 
 ## TODO
 * `decltype`: p. 246 C++ Primer
-* `auto` keyword for loop iterations (vectors, maps)
+* iterator vs iterator types: p. 342 C++ Primer
 
