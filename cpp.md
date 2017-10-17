@@ -1,6 +1,14 @@
 # C++ Reference
 
-## Primitive Built-In Types
+## TOC
+1. [Built-In Types](#built_in)
+2. [Operators](#ops)
+3. [Flow of Control](#floc)
+4. [Compound Types](#comps)
+5. [Classes](#classes)
+
+<span name="built_in"></span>
+## Primitive Built-In Types 
 Most important ones include
 
 ```cpp
@@ -207,7 +215,8 @@ if(i)			// Will only evaluate to true if i != 0
     i = 0;
 ```
 
-## Operators
+<span name="ops"></span>
+## Operators 
 ```cpp
 int a = 0, b = 0;
 
@@ -217,8 +226,8 @@ a++;	a--;
 a /= b; 	a *= b;
 bool m = a < b;		bool n = a > b;
 ```
-
-## Flow of control
+<span name="floc"></span>
+## Flow of control 
 Normally: sequential execution. Modify with:
 
 ### while loop
@@ -258,7 +267,7 @@ if (x < 0)
 if (x < 0) x *= -1;
 ```
 
-
+<span name="comps"></span>
 ## Compound Types: References and Pointers
 
 ### &Reference
@@ -358,6 +367,7 @@ TODO
 ### References to Pointers
 TODO
 
+<span name="io"></span> 
 ## IO
 `<iostream>` library: *istream* for *input stream* and *ostream* for *output stream*
 
@@ -381,8 +391,8 @@ while (std::cin >> val)
 
 ```
 
-
-## Defining Our Own Data Structures: Classes
+<span name="classes"></span>
+## Defining Our Own Data Structures: Classes 
 Classes define custom data structures in C++. A class defines a type along with a collection of operations that are related to that type. These types can be used like built-in types when implemented correctly and smartly. 
 
 To use them, we need to know the name, where it is defined (typically the header) and what operations it supports.
