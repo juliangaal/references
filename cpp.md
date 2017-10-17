@@ -391,7 +391,7 @@ while (std::cin >> val)
 
 ```
 
-<span name="classes"></span>
+<a name="classes"></a>
 ## Defining Our Own Data Structures: Classes 
 Classes define custom data structures in C++. A class defines a type along with a collection of operations that are related to that type. These types can be used like built-in types when implemented correctly and smartly. 
 
