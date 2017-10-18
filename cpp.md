@@ -362,12 +362,29 @@ auto it2 = v.cend();
 
 **Operations**
 
-Operation|Declaration
+Operation|Description
 ---|---
 `*iter`|Returns a reference to the element denoted by iter
 `iter->mem` or `(*iter).mem`| Dereferences and exposed member function `mem`
 `++iter` or `--iter`| Move to next/previous adress
 `iter1 ==(!=) iter2`| True, if they point to same memory address
+
+and furthermore, these *iterator arithmetic* are supported
+
+Operation|Description
+---|---
+`iter +/- n` or `iter +=/-= n`| Returns iterator n-steps ahead/back in container. Must be < that `end()`
+`iter1 - iter2`| Returns distance between the two in `distance_type`
+`< <= >= >`| iter1 is smaller than iter2 if iter1 appears first in container
+
+Example usage
+
+```cpp
+auto mid = v.begin() + v.size() / 2;
+// in some loop: process only first half
+if (it < mid)
+    do_something();
+```
 
 You can use iterator pointers like this
 
