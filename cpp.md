@@ -209,8 +209,9 @@ or the `auto` type specifier, which "auto"-matically deduces the type from the i
 int i = 5, j = 6;
 auto k = i + j;     // auto will produce type int
 ```
-#### Types Conversions
+#### Type Conversions
 
+##### Implicit Conversion
 ```cpp
 bool b = 46;			// true, anything != 0 is true
 int i = b;			// i has value 1
@@ -219,12 +220,55 @@ double pi = i;			// pi has value 3.0
 unsigned char c1 = -1;		// Assuming 8-bit chars, char has value 255
 signed char c2 = 256;		// Value of c2 is undefined. AVOID! Compiler doesn't catch
 ```
+in the example `int i = 3.14`, the 0.14 is "truncated" during it's *implicit conversion* and the compiler might warn about data loss. 
+
 It's a little different for pointers! There's no automatic type conversion there. The pointer must be of the same type as the one it points to.
 
 ```cpp
 int i = 42;
 double *dp = &i;		// Error!
 ```
+When does *implicit conversion* happen?
+
+* values of smaller than `int`-types are usually promoted to and appropriately large `int`-type
+* in conditions, non-`bool` types are converted to `bool`
+* during function calls
+* “In arithmetic and relational expressions with operands of mixed types, the types are converted to a common type.”
+* “In initializations, the initializer is converted to the type of the variable; in assignments, the right-hand operand is converted to the type of the left-hand.”
+
+*integral promotions* converts small integer types to large integer types. Also, `bool`, `(signed/unsigned) char` is converted to an appropriate `(unsigned/signed) int`.
+
+##### Explicit Conversions
+Sometimes, we might want to force the compiler to convert to a specific type: (**Isn't there an implicit cast already??**)
+
+```cpp
+int i = 5, j = 3;
+double k = i / j;
+```
+This is not a double however: we need to *cast* the value first. 
+
+>**Warning: cast are dangerous in general, but necessary at times**
+
+**Static cast**
+The compiler will not gice you warning this time! Often useful when converting larger arithmetic types to smaller ones. Syntax:
+
+```cpp
+double k = static_cast<double>(j / i);
+```
+
+**Const cast**
+Especially useful to overload function. Use to "cast away the const":
+
+```cpp
+const string *s;
+string *s2 = const_cast<string*>(s);        // ok, but using *s2 to change value is undefined
+*s2 = "hi";                                 // runtime error! no compile error
+```
+
+**dynamic cast, reinterpre cast**
+avoid!
+
+>**Warning: “Every time you write a cast, you should think hard about whether you can achieve the same result in a different way. If the cast is unavoidable, errors can be mitigated by limiting the scope in which the cast value is used and by documenting all assumptions about the types involved.”**
 
 #### Leftovers from C
 
@@ -715,8 +759,8 @@ Expression|Type
 ---|---
 `F && T` or `F && f`| short-circuit: only `F` must be evaluated for program to know the result of the entire expression
 `T && F` or `T && F`| **not** short-circuit
-`T || F`|short-circuit
-`F || T`|**not** short circuit
+`T || F` | short-circuit
+`F || T` | **not** short circuit
 
 ##### Operators by precedence
 
@@ -1010,5 +1054,6 @@ Mostly based on "C++ Primer 5th Ed." by Stanley Lippman a.o."
 * "Lvalues and Rvalues"
 * “If we really cared whether val was the specific value 1, we should write the condition to test that case directly.” [HERE](#todo)
 * Why does prefix behave differently in loops?
-* Bitwise Operators 4.8
+* Bitwise Operators 4.8 and `size_of` 4.9
+* Automatic cast to double when two ints?
 
