@@ -321,6 +321,7 @@ vector <int> v7 = {};       // empty list initialization
 ```
 Again, the only difference between *direct initialization* and *copy initialization* is that we **must** use direct initialization when we have > 1 initializers. Additionally, we **can't** to use regular brackets `()` with list initialization.
 
+</br>
 #### Vector operations
 Adding elements is a little special case:
 ```cpp
@@ -344,6 +345,7 @@ Operator|Description
 
 See vectors in [loops](#loops)
 
+<br>
 #### Getting vector values
 As usual, you can get them using the `subscript []`-operator. This is unchecked and can cause buffer overflows, as it's not checked by most compilers, however. If possible use the `range for` functionality in loops or make use of `v.size()`!
 
@@ -368,6 +370,7 @@ auto it1 = v.cbegin();      // both return type vector<int>::const_iterator!
 auto it2 = v.cend();
 ```
 
+</br>
 **Operations**
 <a name="iterop"></a>
 Operation|Description
@@ -407,6 +410,7 @@ if (v.begin() != v.end()) {
 </br>
 <a name="arrays"></a>
 ### Arrays
+
 Like vectors, arrays are containers that contain n number of elements of a specific time, **their size is fixed** however. An array declarator consists of a name "name" and number of elements "n": `name[n]`.
 
 ```cpp
@@ -441,6 +445,7 @@ int arr5[4][4] = {1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4};
 >**Note: no copy or assignment as e.g. in vectors, we can't assign one array to another!**
 
 Character arrays end all "strings" with the `\0`, as in C.
+
 >**“Although C++ supports C-style strings, they should not be used by C++ programs. C-style strings are a surprisingly rich source of bugs and are the root cause of many security problems. They’re also harder to use!” Also, for most C++ programs, it is more efficient to use the C++ provided `std::string`**
 
 
@@ -450,7 +455,8 @@ TODO
 
 </br>
 #### Accessing Array Elements
-We can use `range for` operators or use the `subscript`-operators. The index starts at 0. When choosing to use the latter, the variable should be of the type `size_t`.
+We can use `range for` operators or use the `subscript` operators. The index starts at 0. When choosing to use the latter, the variable should be of the type `size_t`.
+
 >**`size_t` is a machine specific unsigned type that is guaranteed to be big enough to hold the size of any object in memory**
 
 see [loops](#loops) to see the `range for` approach.
@@ -624,7 +630,9 @@ TODO: “There are no guarantees as to the order in which these functions are ca
 </br>
 <a name="ops"></a>
 ### Arithmetic Operators 
+
 #### General
+
 ```cpp
 int a = 0, b = 0;
 
@@ -644,6 +652,7 @@ bool t = -m;        bool s = !m;
 
 </br>
 ##### Operators by Precedence
+
 Op|Example
 ---|---
 `+`/`-` **unary**|++i;
@@ -666,6 +675,7 @@ Expression|Type
 `F || T`|**not** short circuit
 
 ##### Operators by precedence
+
 Ops|Desc
 ---|---
 `!`|!expr
