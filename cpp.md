@@ -15,7 +15,9 @@
 
 </br>
 <a name="built_in"></a>
+
 ## Primitive Built-In Types 
+
 Most important ones include
 
 ```cpp
@@ -47,7 +49,9 @@ for (unsigned int = 0; i >= 0; --i)
 ```
 
 </br>
+
 ### Variables, Scope and Initialization
+
 >“Initialization is not assignment. Initialization happens when a variable is given a value when it is created. Assignment obliterates an object’s current value and replaces that value with a new one.” 
 
 For example, we can initialize the variable u in 4 different ways
@@ -160,13 +164,16 @@ Variables should
 ***Use consistenly!***
 
 </br>
+
 ### Character and Character String Literals
+
 `'a'` is a character literal
 `"Hello, World!"` is a string literal (array of constant chars, as in C, string literals are represented by the string + `\0` literal)
 
 Good to know: `true` and `false` are literals of type bool.
 
 #### Escape Sequences
+
 ```cpp
 \n		// newline
 \t		// tab
@@ -180,9 +187,11 @@ Good to know: `true` and `false` are literals of type bool.
 ```
 
 </br>
+
 ### Types
 
 #### Defining types
+
 A `type alias` is a name synonymous with another type, e.g.
 
 ```cpp
@@ -201,6 +210,7 @@ int i = 5, j = 6;
 auto k = i + j;     // auto will produce type int
 ```
 #### Types Conversions
+
 ```cpp
 bool b = 46;			// true, anything != 0 is true
 int i = b;			// i has value 1
@@ -217,6 +227,7 @@ double *dp = &i;		// Error!
 ```
 
 #### Leftovers from C
+
 Remember: there's no bool type in c, only int
 
 ```cpp
@@ -227,9 +238,11 @@ if(i)			// Will only evaluate to true if i != 0
 
 </br>
 <a name="sva"></a>
+
 ## Abstract Data Types: Strings, Vectors, Arrays
 
 ### Namespace *using* Declarations
+
 Using a *using declarations* allows us to drop the prefix of the library we're using. It has the form `using namespace::name` e.g.
 
 ```cpp
@@ -244,7 +257,9 @@ defines namespace and let's us access `name` directly.
 Avoid too "general" namespaces like `using namespace std`, as it is very well possible that a library you imported may conflict with the resulting direct acces to `name`. If expressivness is important to you, explicitly stating the library namespace is a good practice however.
 
 <a name="string"></a>
+
 ### String type
+
 A string is a variable-length sequence of characters and is part of the standard library. It must be included in the header with `#include <string>`.
 
 ```cpp
@@ -259,6 +274,7 @@ string s4 (n, 'c');                // n number of 'c'-literals
 The only difference between *direct initialization* and *copy initialization* is that we **must** use direct initialization when we have > 1 initializers (see `s4`).
 
 #### Common string operations
+
 Usage   | Description
 ------- | ----------- 
 `os << s`|  Writes s onto output stream os, returns os
@@ -300,6 +316,7 @@ while (getline(std::cin, s))
 
 </br>
 <a name="vecs"></a>
+
 ### Vector Type
 
 A vector holds a variable-length sequence of objects of a given type. Sometimes vectors are referred to as being a *container*, because it *contains* (duh) other types. To us it, we must include the header `#include <vector>`.
@@ -322,7 +339,9 @@ vector <int> v7 = {};       // empty list initialization
 Again, the only difference between *direct initialization* and *copy initialization* is that we **must** use direct initialization when we have > 1 initializers. Additionally, we **can't** to use regular brackets `()` with list initialization.
 
 </br>
+
 #### Vector operations
+
 Adding elements is a little special case:
 ```cpp
 vector<int> vec;
@@ -346,7 +365,9 @@ Operator|Description
 See vectors in [loops](#loops)
 
 <br>
+
 #### Getting vector values
+
 As usual, you can get them using the `subscript []`-operator. This is unchecked and can cause buffer overflows, as it's not checked by most compilers, however. If possible use the `range for` functionality in loops or make use of `v.size()`!
 
 A more general way is using **iterators**. They give us direct access to objects in a container, e.g. vectors or strings. Unlike pointers, iterators have type members: `begin` and `end`. “In general, we do not know (or care about) the precise type that an iterator has”.
@@ -371,8 +392,11 @@ auto it2 = v.cend();
 ```
 
 </br>
-**Operations**
 <a name="iterop"></a>
+
+**Operations**
+
+
 Operation|Description
 ---|---
 `*iter`|Returns a reference to the element denoted by iter
@@ -409,6 +433,7 @@ if (v.begin() != v.end()) {
 
 </br>
 <a name="arrays"></a>
+
 ### Arrays
 
 Like vectors, arrays are containers that contain n number of elements of a specific time, **their size is fixed** however. An array declarator consists of a name "name" and number of elements "n": `name[n]`.
@@ -450,11 +475,15 @@ Character arrays end all "strings" with the `\0`, as in C.
 
 
 </br>
+
 #### Arrays: References and Pointers
+
 TODO
 
 </br>
+
 #### Accessing Array Elements
+
 We can use `range for` operators or use the `subscript` operators. The index starts at 0. When choosing to use the latter, the variable should be of the type `size_t`.
 
 >**`size_t` is a machine specific unsigned type that is guaranteed to be big enough to hold the size of any object in memory**
@@ -462,7 +491,9 @@ We can use `range for` operators or use the `subscript` operators. The index sta
 see [loops](#loops) to see the `range for` approach.
 
 </br>
+
 #### Arrays and pointers
+
 Suppose we're looking at this
 
 ```cpp
@@ -495,10 +526,13 @@ while (b != e && *b >= 0)
 ```
 
 </br>
+
 #### Array arithmetic
+
 You can use the arithmetic mentioned [here](#iterop), however, subtracting two pointers from each other returns a signed type called `ptrdiff`.
 
 </br>
+
 #### Use vector if you can
 
 Pointers and arrays are very error prone. For more read: 3.5.5 Interfacig with older code - C++ Primer
@@ -511,10 +545,13 @@ vector<int> vec (begin(arr), end(arr));
 
 </br>
 <a name="floc"></a>
+
 ## Flow of control 
+
 Normally: sequential execution. Modify with:
 
 ### while loops
+
 ```cpp
 while(val <= 10) {
     sum += 10;
@@ -522,6 +559,7 @@ while(val <= 10) {
 ```
 
 ### for loop
+
 ```cpp
 for (int i = 0; i < 10; i++) {
     std::cout << i << std::endl;
@@ -588,6 +626,7 @@ while (b != e && *b >= 0)
 Using `subscript` is definitely unsafer for loops!
 
 ### if statements
+
 ```cpp
 int x = 1;
 // Some program
@@ -604,7 +643,9 @@ if (x < 0) x *= -1;
 
 </br>
 <a name="exps"></a>
+
 ## Expressions
+
 An **expression** is formed from one or more *operands* and yields a result 
 
 **Unary Operators**
@@ -629,6 +670,7 @@ TODO: “There are no guarantees as to the order in which these functions are ca
 
 </br>
 <a name="ops"></a>
+
 ### Arithmetic Operators 
 
 #### General
@@ -651,6 +693,7 @@ bool t = -m;        bool s = !m;
 >**Warning: Beware of overflow! e.g. on a 16 bit system, the max `short` value is 32767. Adding 1 to that has unpredictable results and often times is not caught by compiler. Also some limitations arise due to math, e.g. the division with 0**
 
 </br>
+
 ##### Operators by Precedence
 
 Op|Example
@@ -664,6 +707,7 @@ Op|Example
 >**Tip: Use postfix `i++` only when necessary! It avoids unnecessary work, the postfix must store the value before returning it + 1. Also, for ints and pointers, the compiler can do some optimization.
 
 </br>
+
 #### Logical `AND` and `OR`
 Are represented by `&&` and `||`. Expressions containing one of those are evaluated from left to right and with **short-circuit evaluation**: the right operand is only evaluated, if and only if the left operator does not entail the result. e.g.
 
@@ -686,6 +730,7 @@ Ops|Desc
 `||`|logical `OR`
 
 </br>
+
 #### Equality Tests
 `i` evalues to `true`, if it's not 0, and `false` if it's zero:
 
@@ -711,6 +756,7 @@ if (i == 1)
 >**Warning: these literals should only be used to compare objects**
 
 </br>
+
 ### Conditional Operator
 the `?` allows us to house simple if-else conditions in one line. e.g.
 
@@ -726,14 +772,18 @@ string final_grade = (grade > 90) ? "high pass"
 >These nested conditionals become quite unreadable. Stick to a max of 2-3 layers.
 
 </br>
+
 ### Bitwise Operators
+
 TODO
 
 </br>
 <a name="comps"></a>
+
 ## Compound Types: References and Pointers
 
 ### &Reference
+
 A **Reference** defines an alternate name for an object. A reference type "refers to" another type by using the memory address of the referenced object in question.
 
 ```cpp
@@ -747,6 +797,7 @@ Instead of copying the initializers value to refVal, we *bind* the reference to 
 >“There is *no* way to rebind a reference to refer to a different object. Because there is no way to rebind a reference, references **must** be initialized.”
 
 ### *Pointer
+
 A **Pointer** is a compound type that "points to" another type. Unlike references, a pointer is an object in it's own right. This means
  
  * no need to initialize
@@ -787,7 +838,9 @@ while(beg != v.end() && *beg > 0)
 because the precedence of `++` is higher than the dereferencing operator `*`, this is equivalent to `*(beg++)`.
 
 </br>
+
 #### Nullpointers
+
 ... don't point to any objects
 
 ```cpp
@@ -806,7 +859,9 @@ if (!p2){}			// Would be used to check for nullptr
 > Define pointers after object to which it should point is defined. For all other pointers, initialize them to nullptr**
 
 </br>
+
 #### Void* Pointers
+
 Void* pointers can hold the address of any object, but the type is unknown.
 
 What can we do with it?
@@ -839,15 +894,20 @@ int *p2, *p3;			// p2 and p3 are pointers to int
 Again, there's no "offical way to do it", so pick one way and use it consistently!
 
 ### Member access
+
 `ptr->mem` is synonymous to `(*ptr).mem`. Because dereferencing has lower precedence than `*`, `*ptr.mem` would throw and error.
 
 ### Pointers to Pointers
+
 TODO
 ### References to Pointers
+
 TODO
 
 <a name="io"></a> 
+
 ## IO
+
 `<iostream>` library: *istream* for *input stream* and *ostream* for *output stream*
 
 * `cin`	: standard input
@@ -872,12 +932,15 @@ while (std::cin >> val)
 ```
 
 <a name="classes"></a>
+
 ## Defining Our Own Data Structures: Classes 
+
 Classes define custom data structures in C++. A class defines a type along with a collection of operations that are related to that type. These types can be used like built-in types when implemented correctly and smartly. 
 
 To use them, we need to know the name, where it is defined (typically the header) and what operations it supports.
 
 ### Creating header files
+
 To ensure that our class definition is the same across multiple files, we tend to define classes in *header files*, usually abbreviated with `.h`, `.hpp`, `.H` or `.hxx`. 
 The most common method to make it safe to use the same header file in multiple locations is the *preprocessor*, a program that runs before the compiler and changes the source text of your program. Then the pp sees `#include` it replaces the statement with the contents of the specified header file. 
 C++ programs also use the preprocessor to define *header guards* that shield from reimportation/re-replacement of `include`-statements, e.g.
@@ -901,6 +964,7 @@ Let's say in main, by accident (or willful destructive urges), you `#include Sal
 > - use UPPER CASE for header guard name
 
 ## Separate Compilation
+
 ... allows our program to be split into multiple logical parts. To support it, C++ distinguishes between declarations and definitions. </br> A *declaration* makes a variable known to the program and defines type and name. </br>A *definition* creates the associated entity by declaring it and allocating space and/or an initial value.
 
 ```cpp
@@ -912,12 +976,14 @@ extern double pi = 3.1416;		// An extern that has an initializer is a definition
 >**Note**: **Variables must be defined exactly once but can be declared many times.** 
 
 ## Comments
+
 * `//`: single line comments
 * `/**/` : multi line comments, use asterix between comment pairs to visualize inner lines. 
 
 >*Warning*: Comment pairs do not nest, meaning comments in comments cause compiler errors
 
 ## Key Concepts
+
 **Statically typed**
 C++ is a statically typed lanuage, meaning that types are checked at compile time.
 
@@ -931,10 +997,13 @@ It is usually faster to declare a vector without an initializer, except when all
 “By routinely using iterators and !=, we don’t have to worry about the precise type of container we’re processing.” For example, in loop example [#3](#iterloop), you can see that we use `!=` rather than `<`. By using that and range/iterator based loops, we guarantee, that there can't be any buffer overflows.
 
 Excerpt From: Lippman, Stanley B. “C++ Primer, 5/e.” iBooks.  
+
 ## Sources
+
 Mostly based on "C++ Primer 5th Ed." by Stanley Lippman a.o."
 
 ## TODO
+
 * `decltype`: p. 246 C++ Primer
 * iterator vs iterator types: p. 342 C++ Primer
 * Arrays: References and Pointers, 3.5.1 C++ Primer, Multidim Pointers 3.6
