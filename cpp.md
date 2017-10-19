@@ -5,12 +5,15 @@
 2. [Abstract Data Types: Strings, Vectors, Arrays](#sva) </br>
     a. [Strings](#strings) </br>
     b. [Vectors](#vecs) </br>
-3. [Operators](#ops)
-4. [Flow of Control](#floc)
+    c. [Arrays](#arrays) </br>
+3. [Flow of Control](#floc)
+4. [Expressions](#exps) </br>
+    a. [Operators](#ops) </br>
 5. [Compound Types](#comps)
 6. [Classes](#classes)
 7. [IO](#io)
 
+</br>
 <a name="built_in"></a>
 ## Primitive Built-In Types 
 Most important ones include
@@ -43,6 +46,7 @@ for (unsigned int = 0; i >= 0; --i)
 	std::cout << i << std::endl;
 ```
 
+</br>
 ### Variables, Scope and Initialization
 >“Initialization is not assignment. Initialization happens when a variable is given a value when it is created. Assignment obliterates an object’s current value and replaces that value with a new one.” 
 
@@ -155,6 +159,7 @@ Variables should
 
 ***Use consistenly!***
 
+</br>
 ### Character and Character String Literals
 `'a'` is a character literal
 `"Hello, World!"` is a string literal (array of constant chars, as in C, string literals are represented by the string + `\0` literal)
@@ -174,6 +179,7 @@ Good to know: `true` and `false` are literals of type bool.
 ...		
 ```
 
+</br>
 ### Types
 
 #### Defining types
@@ -219,6 +225,7 @@ if(i)			// Will only evaluate to true if i != 0
     i = 0;
 ```
 
+</br>
 <a name="sva"></a>
 ## Abstract Data Types: Strings, Vectors, Arrays
 
@@ -291,6 +298,7 @@ while (getline(std::cin, s))
 ```
 >Note: `newline` is ignored
 
+</br>
 <a name="vecs"></a>
 ### Vector Type
 
@@ -361,7 +369,7 @@ auto it2 = v.cend();
 ```
 
 **Operations**
-
+<a name="iterop"></a>
 Operation|Description
 ---|---
 `*iter`|Returns a reference to the element denoted by iter
@@ -396,17 +404,106 @@ if (v.begin() != v.end()) {
 ```
 >**Note: if a vector is declared, but not initialized begin() and end() iterators are the same**
 
-<a name="ops"></a>
-## Operators 
+</br>
+<a name="arrays"></a>
+### Arrays
+Like vectors, arrays are containers that contain n number of elements of a specific time, **their size is fixed** however. An array declarator consists of a name "name" and number of elements "n": `name[n]`.
+
 ```cpp
-int a = 0, b = 0;
+unsigned size1 = 42;
+constexpr size2 = 42;
 
-++a;	--a;
-a++;	a--;
-
-a /= b; 	a *= b;
-bool m = a < b;		bool n = a > b;
+int array1[10];
+int array2[size1];          // Error: size1 is not constexpr
+int array3[size2];
+int array4[get_size()];     // ok, if get_size() constexpr
 ```
+to initialize
+
+```cpp
+int array1[3] = {0, 1, 2};
+int array2[] = {0, 1, 2};   // equivalent
+int array3[5] = {0, 1, 2};  // {0, 1, 2, 0, 0}, fills up with empty type
+
+// Multidim
+int arr4[4][4] = {
+    {1, 2, 3, 4},
+    {1, 2, 3, 4},
+    {1, 2, 3, 4},
+    {1, 2, 3, 4}
+};
+
+// avoid this way less clear way
+// Note: “To use a multidimensional array in a range for, the loop control variable for all but the innermost array must be references.”
+int arr5[4][4] = {1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4};
+```
+
+>**Note: no copy or assignment as e.g. in vectors, we can't assign one array to another!**
+
+Character arrays end all "strings" with the `\0`, as in C.
+>**“Although C++ supports C-style strings, they should not be used by C++ programs. C-style strings are a surprisingly rich source of bugs and are the root cause of many security problems. They’re also harder to use!” Also, for most C++ programs, it is more efficient to use the C++ provided `std::string`**
+
+
+</br>
+#### Arrays: References and Pointers
+TODO
+
+</br>
+#### Accessing Array Elements
+We can use `range for` operators or use the `subscript`-operators. The index starts at 0. When choosing to use the latter, the variable should be of the type `size_t`.
+>**`size_t` is a machine specific unsigned type that is guaranteed to be big enough to hold the size of any object in memory**
+
+see [loops](#loops) to see the `range for` approach.
+
+</br>
+#### Arrays and pointers
+Suppose we're looking at this
+
+```cpp
+string arr[5] = {"hi", "there", "hi"};
+string *first = &arr[0];
+```
+the `first` pointer points to the first element in `arr`. This is symonymous to 
+
+```cpp
+string *first = arr;
+```
+because "the compiler automatically substitutes a pointer to first element". You can use this to iterate through arrays, as usual with pointers:
+
+```cpp
+“int last = *(arr + 4)”     // equivalent to arr[4]
+```
+
+It is recommended to use the `begin` and `end`-operators, as they are safer to use than manually getting the element behind the array, e.g. `int *e = &arr[10]` with length 10! Since C++1x, you can use
+
+```cpp
+int arr[] = {1, 2, 3, 4, 5};
+int *b = begin(arr); 
+int *e = end(arr);
+```
+This enables this kind of usage:
+
+```cpp
+while (b != e && *b >= 0)
+    ++b; 
+```
+
+</br>
+#### Array arithmetic
+You can use the arithmetic mentioned [here](#iterop), however, subtracting two pointers from each other returns a signed type called `ptrdiff`.
+
+</br>
+#### Use vector if you can
+
+Pointers and arrays are very error prone. For more read: 3.5.5 Interfacig with older code - C++ Primer
+
+To convert, you could use something like this:
+```cpp
+int arr[] = {1, 2, 3};
+vector<int> vec (begin(arr), end(arr));
+```
+
+</br>
 <a name="floc"></a>
 ## Flow of control 
 Normally: sequential execution. Modify with:
@@ -448,6 +545,7 @@ for (auto &c: s)
     c = change_to_something();
 ```
 Same goes for vectors
+<a name="iterloop"></a>
 
 ```cpp
 vector<int> vec = {1, 2, 3, 4, 5}
@@ -463,7 +561,24 @@ for (auto it = v.begin(); it != v.end() && !isspace(*it); ++it) {
     *it = do_something_here;
 }
 ```
-<a name="iterloop"></a>
+
+And arrays
+
+```cpp
+int arr[10] = {0, 1, 2};
+for (range val : arr)
+    cout << val <<;
+
+int *e = &arr[10];              // element just past array length!    
+for (int *b = arr; b != e; ++b)
+    cout << *b << endl; 
+    
+// Safer way: begin and end
+int *b = begin(arr); 
+int *e = end(arr);
+while (b != e && *b >= 0)
+    ++b; 
+```
 Using `subscript` is definitely unsafer for loops!
 
 ### if statements
@@ -481,6 +596,130 @@ if (x < 0)
 if (x < 0) x *= -1;
 ```
 
+</br>
+<a name="exps"></a>
+## Expressions
+An **expression** is formed from one or more *operands* and yields a result 
+
+**Unary Operators**
+... like `&` or `*` (dereference) act on one operand.
+
+**Binary Operators**
+... like `==` and `*` act on two operands.
+
+**Compound Expressions**
+... are expressions with 2 or more operators. To evaluate those, operators have to be grouped to operands according to *precedence* and *associativity*.
+
+* “Because of *precedence*, the expression 3+4*5 is 23, not 35.”, it groups the operands. "Punkt vor Strich"
+* “Because of *associativity*, the expression 20-15-3 is 2, not 8.”
+
+In C++, e.g. `5 + 3 * 1 / 2 + 2` is internally represented by `((5 + ((3*1)/2)) + 2)`, where the parenthesis override precedence and associativity. We can manually override these properties with parenthesis, if we'd like. However, knowing the *order of evaluation* can help us reduce the use of parenthesis. For example, in `g() + f() * h() - x()`, *precedence* guarantees that `f() * g()` are grouped together, and *associativity* guarantess that `g()` is added to the prodct of `f() * h()` and that in turn subtracted from `h()`.
+
+>**Advice for Compound Expressions: 
+> When in doubt, manually set parenthesis
+> if you change the value of the operand, try not to use it in the same expression**
+
+TODO: “There are no guarantees as to the order in which these functions are called.” Y? 
+
+</br>
+<a name="ops"></a>
+### Arithmetic Operators 
+#### General
+```cpp
+int a = 0, b = 0;
+
+++a;	--a;
+a++;	a--;
+
+int c = a % b;
+
+a /= b; 	a *= b;
+bool m = a < b;		bool n = a > b;
+
+// Try to avoid     // better: logical NOT operator
+bool t = -m;        bool s = !m;
+```
+
+>**Warning: Beware of overflow! e.g. on a 16 bit system, the max `short` value is 32767. Adding 1 to that has unpredictable results and often times is not caught by compiler. Also some limitations arise due to math, e.g. the division with 0**
+
+</br>
+##### Operators by Precedence
+Op|Example
+---|---
+`+`/`-` **unary**|++i;
+`*`|i * 2;
+`/`|i / 2;
+`%`|i % 2;
+`+`/`-` **binary**|i + j;
+
+>**Tip: Use postfix `i++` only when necessary! It avoids unnecessary work, the postfix must store the value before returning it + 1. Also, for ints and pointers, the compiler can do some optimization.
+
+</br>
+#### Logical `AND` and `OR`
+Are represented by `&&` and `||`. Expressions containing one of those are evaluated from left to right and with **short-circuit evaluation**: the right operand is only evaluated, if and only if the left operator does not entail the result. e.g.
+
+Expression|Type
+---|---
+`F && T` or `F && f`| short-circuit: only `F` must be evaluated for program to know the result of the entire expression
+`T && F` or `T && F`| **not** short-circuit
+`T || F`|short-circuit
+`F || T`|**not** short circuit
+
+##### Operators by precedence
+Ops|Desc
+---|---
+`!`|!expr
+`<`/`<=`|less than/less or equal than
+`>`/`>=`|greater than, greater of equal than
+`==`/`!=`|(in)equality
+`&&`|logical `AND`
+`||`|logical `OR`
+
+</br>
+#### Equality Tests
+`i` evalues to `true`, if it's not 0, and `false` if it's zero:
+
+```cpp
+if (i)
+    do_something();
+```
+We can also ask for equality with the `==`-operator, which returns a `bool`
+
+```cpp
+if (i == true)
+    do_something();
+```
+The problem here is, that when `i` is not a `bool`, unexpected things happen: `bool` is converted to the type of val, e.g. `i` being `int`, before the `==` operator. In this case:
+
+```cpp
+if (i == 1)
+    do_something();
+```
+<a name="todo"></a>
+“If we really cared whether val was the specific value 1, we should write the condition to test that case directly.” TODO HOW 
+
+>**Warning: these literals should only be used to compare objects**
+
+</br>
+### Conditional Operator
+the `?` allows us to house simple if-else conditions in one line. e.g.
+
+```cpp
+string final_grade = (grade < 5.0) ? "pass" : "fail";
+```
+This will evalue to "pass" if the `grade` is smaller than 5.0, and "fail" otherwise. We can nest expressions as well, like this example from C++ Primer:
+
+```cpp
+string final_grade = (grade > 90) ? "high pass"
+                          : (grade < 60) ? "fail" : "pass";
+```
+>These nested conditionals become quite unreadable. Stick to a max of 2-3 layers.
+
+</br>
+### Bitwise Operators
+TODO
+
+</br>
 <a name="comps"></a>
 ## Compound Types: References and Pointers
 
@@ -528,6 +767,16 @@ We can also compare two valid pointers of the same type: `==` and `!=` to type *
 * they address the same object
 * they are both pointers one past the same object
 
+Incrementing pointers show an important difference:
+
+```cpp
+auto beg = v.begin();
+while(beg != v.end() && *beg > 0)
+    cout << *beg++ << endl;
+```
+because the precedence of `++` is higher than the dereferencing operator `*`, this is equivalent to `*(beg++)`.
+
+</br>
 #### Nullpointers
 ... don't point to any objects
 
@@ -546,6 +795,7 @@ if (!p2){}			// Would be used to check for nullptr
 > Unitialized pointers are a common source of runtime errors and are a nightmare to debug. There's no way for the compiler to distinguish a valid memory address from an invalid one. 
 > Define pointers after object to which it should point is defined. For all other pointers, initialize them to nullptr**
 
+</br>
 #### Void* Pointers
 Void* pointers can hold the address of any object, but the type is unknown.
 
@@ -577,6 +827,9 @@ int *p2, *p3;			// p2 and p3 are pointers to int
 ```
 
 Again, there's no "offical way to do it", so pick one way and use it consistently!
+
+### Member access
+`ptr->mem` is synonymous to `(*ptr).mem`. Because dereferencing has lower precedence than `*`, `*ptr.mem` would throw and error.
 
 ### Pointers to Pointers
 TODO
@@ -674,4 +927,9 @@ Mostly based on "C++ Primer 5th Ed." by Stanley Lippman a.o."
 ## TODO
 * `decltype`: p. 246 C++ Primer
 * iterator vs iterator types: p. 342 C++ Primer
+* Arrays: References and Pointers, 3.5.1 C++ Primer, Multidim Pointers 3.6
+* "Lvalues and Rvalues"
+* “If we really cared whether val was the specific value 1, we should write the condition to test that case directly.” [HERE](#todo)
+* Why does prefix behave differently in loops?
+* Bitwise Operators 4.8
 
