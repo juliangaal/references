@@ -16,12 +16,12 @@
 </br>
 <a name="built_in"></a>
 
-## Primitive Built-In Types 
+## Primitive Built-In Types
 
 Most important ones include
 
 ```cpp
-bool		boolean			NA	
+bool		boolean			NA
 char		character		8 bits
 short 		short integer		16 bits
 int		integer			16 bits
@@ -52,7 +52,7 @@ for (unsigned int = 0; i >= 0; --i)
 
 ### Variables, Scope and Initialization
 
->“Initialization is not assignment. Initialization happens when a variable is given a value when it is created. Assignment obliterates an object’s current value and replaces that value with a new one.” 
+>“Initialization is not assignment. Initialization happens when a variable is given a value when it is created. Assignment obliterates an object’s current value and replaces that value with a new one.”
 
 For example, we can initialize the variable u in 4 different ways
 
@@ -61,11 +61,11 @@ int u = 0;
 int u = {0}; 		// list initialization!
 int u{0};		// list initialization!
 int u(0);
-``` 
+```
 Curly brackets and list initialization becomes important when used with built-in types: The compiler won't let us initialize if/because it could lead to loss of information
 
 ```cpp
-double pi = 3.1434345682...	
+double pi = 3.1434345682...
 int a{pi}, b = {pi};			// error: narrowing conversion
 int c(pi), b = pi;			// ok, but value will be truncated
 ```
@@ -79,23 +79,23 @@ When we define a built-in type variable without an ititializer, it is assigned a
 #### Scope
 Scope is mostly determined by curly brackets
 
-A variable with *global scope* is accessible to the entire file. e.g. main function. 
-A variable with *block scope* is accessbile to the block (function, {}, for-/while-loop) in question. 
+A variable with *global scope* is accessible to the entire file. e.g. main function.
+A variable with *block scope* is accessbile to the block (function, {}, for-/while-loop) in question.
 
->**Advice: 
->Define variables where you first use them: 1.ly Better readability and 2.ly initial value will (probably) be more adequate.** 
+>**Advice:
+>Define variables where you first use them: 1.ly Better readability and 2.ly initial value will (probably) be more adequate.**
 
 ``` cpp
 double x = 5; 	// accessible in entire file: avoid!
 
 int main() {
 	int i = 1;	// not accessible outside main!
-	
+
 	{
 		int x = 0;		// x and b only accessible between these two brackets
 		int b = (x + 6);
 	}
-	
+
 	return 0;
 }
 ```
@@ -123,14 +123,14 @@ where `extern` signals to the compiler, that the variable is initialized in anot
 
 > Remember: we can bind a reference to an object of a const type, but we can't change the object to which the reference is bound. For more info, 2.4.1/2 p. 217 in "C++ Primer"
 
-**Constexpr and Constant Expressions** 
+**Constexpr and Constant Expressions**
 A *constant expressions* is an expressions whose value cannot be changed and that can evaluated at compile time. A `const` object that is initialized from a *constant expression* is also a constant expression.
 
 ```cpp
 const int val = 5;              // constant expression
 int vals = 6;                   // not a constant expression
 const int valss = get_val()     // not a constant expression! Value not clear at compile time
-``` 
+```
 In C++1x, we can use the keyword `constexpr` explicitely, to tell the compiler that the variable is implicitly const
 
 ```cpp
@@ -144,7 +144,7 @@ With pointers, `constexpr` behaves a little different
 
 ```cpp
 const int *p = nullptr;         // p is a pointer to a const int
-constexpr int *q = nullptr;     // q is a const pointer to int 
+constexpr int *q = nullptr;     // q is a const pointer to int
 ```
 “ The difference is a consequence of the fact that constexpr imposes a top-level const [...] on the objects it defines.” More examples
 
@@ -154,7 +154,7 @@ constexpr const int *p = &i;    // defines constant pointer to const int
 ```
 
 #### Naming Conventions
-Variables should 
+Variables should
 
 * convey meaning to make code more readable
 * normally be lowercase
@@ -183,7 +183,7 @@ Good to know: `true` and `false` are literals of type bool.
 \"		// double quote
 \'		// single quote
 \\		// backslash
-...		
+...
 ```
 
 </br>
@@ -220,7 +220,7 @@ double pi = i;			// pi has value 3.0
 unsigned char c1 = -1;		// Assuming 8-bit chars, char has value 255
 signed char c2 = 256;		// Value of c2 is undefined. AVOID! Compiler doesn't catch
 ```
-in the example `int i = 3.14`, the 0.14 is "truncated" during it's *implicit conversion* and the compiler might warn about data loss. 
+in the example `int i = 3.14`, the 0.14 is "truncated" during it's *implicit conversion* and the compiler might warn about data loss.
 
 It's a little different for pointers! There's no automatic type conversion there. The pointer must be of the same type as the one it points to.
 
@@ -245,7 +245,7 @@ Sometimes, we might want to force the compiler to convert to a specific type: (*
 int i = 5, j = 3;
 double k = i / j;
 ```
-This is not a double however: we need to *cast* the value first. 
+This is not a double however: we need to *cast* the value first.
 
 >**Warning: cast are dangerous in general, but necessary at times**
 
@@ -320,7 +320,7 @@ The only difference between *direct initialization* and *copy initialization* is
 #### Common string operations
 
 Usage   | Description
-------- | ----------- 
+------- | -----------
 `os << s`|  Writes s onto output stream os, returns os
 `is >> s`|  Reads whitespace seperated from is into s, return is
 `getline(is, s)`| Reads a line of input from is into s, return is
@@ -330,7 +330,7 @@ Usage   | Description
 `s1 + s2` or `s1.append(s2)`| String concatenation
 `s1 = s2`| Replaces contents of s1 with contents of s2
 `s1 ==/(!=) s2` or `s1.equals(s2)`| Returns true if equal
-`< <= >= >`| Comparisons 
+`< <= >= >`| Comparisons
 
 For individual character treatment, look at `cctype`-header. (p. 293, C++ Primer)
 Also, you should be using the *range for* statements introduced in c++1x. See [loops](#loops)
@@ -376,7 +376,7 @@ vector <T> v2 = v1;         // equivalent
 vector <T> v3 (n, val);     // n elements with value val
 vector <T> v4 (n);          // vector with n empty elements
 vector <int> v5 {1, 2, 4};  // direct list initialization
-vector <int> v6 = {1, 2, 3};// copy list initialization, equivalent 
+vector <int> v6 = {1, 2, 3};// copy list initialization, equivalent
 vector <int> v7 = {};       // empty list initialization
 
 ```
@@ -394,7 +394,7 @@ for (int i = 0; i < 100; i++)
 ```
 Intuitively (if you're used to C or Java), setting the size of `vec` to 100 may make sense, but **vectors grow efficiently**. That means it's usually more efficient to initialize the vector empty. The only exception to this is if all values are the same, e.g. `vector<int> vec (10, 1);`.
 
-More operations include 
+More operations include
 
 Operator|Description
 ---|---
@@ -470,7 +470,7 @@ You can use iterator pointers like this
 ```cpp
 if (v.begin() != v.end()) {
     auto it = v.begin();
-    *it = some_value;    
+    *it = some_value;
 }
 ```
 >**Note: if a vector is declared, but not initialized begin() and end() iterators are the same**
@@ -544,7 +544,7 @@ Suppose we're looking at this
 string arr[5] = {"hi", "there", "hi"};
 string *first = &arr[0];
 ```
-the `first` pointer points to the first element in `arr`. This is symonymous to 
+the `first` pointer points to the first element in `arr`. This is symonymous to
 
 ```cpp
 string *first = arr;
@@ -559,14 +559,14 @@ It is recommended to use the `begin` and `end`-operators, as they are safer to u
 
 ```cpp
 int arr[] = {1, 2, 3, 4, 5};
-int *b = begin(arr); 
+int *b = begin(arr);
 int *e = end(arr);
 ```
 This enables this kind of usage:
 
 ```cpp
 while (b != e && *b >= 0)
-    ++b; 
+    ++b;
 ```
 
 </br>
@@ -590,7 +590,7 @@ vector<int> vec (begin(arr), end(arr));
 </br>
 <a name="floc"></a>
 
-## Flow of control 
+## Flow of control
 
 Normally: sequential execution. Modify with:
 
@@ -613,7 +613,7 @@ for (int i = 0; i < 10; i++) {
 // Shorter
 for (int i = 0; i < 10; i++)
     val += 10;
-	
+
 // The shortest
 for (int i = 0; i < 10; i++) val += 10;
 ```
@@ -625,8 +625,8 @@ std::string s = "Hello, World!";
 for (auto c: s)     // For every character c in s, do..
     std::cout << c << std::endl;
 ```
-We have to use references, if we want to change the value of the character, though! 
- 
+We have to use references, if we want to change the value of the character, though!
+
 ```cpp
 std::string s = "Hello, World!";
 for (auto &c: s)
@@ -643,7 +643,7 @@ for (auto &v : vec)
 // No value change, no reference
 for (auto v : vec)
     cout << v << endl;
-    
+
 // With iterator
 for (auto it = v.begin(); it != v.end() && !isspace(*it); ++it) {
     *it = do_something_here;
@@ -657,15 +657,15 @@ int arr[10] = {0, 1, 2};
 for (range val : arr)
     cout << val <<;
 
-int *e = &arr[10];              // element just past array length!    
+int *e = &arr[10];              // element just past array length!
 for (int *b = arr; b != e; ++b)
-    cout << *b << endl; 
+    cout << *b << endl;
     
 // Safer way: begin and end
-int *b = begin(arr); 
+int *b = begin(arr);
 int *e = end(arr);
 while (b != e && *b >= 0)
-    ++b; 
+    ++b;
 ```
 Using `subscript` is definitely unsafer for loops!
 
@@ -690,7 +690,7 @@ if (x < 0) x *= -1;
 
 ## Expressions
 
-An **expression** is formed from one or more *operands* and yields a result 
+An **expression** is formed from one or more *operands* and yields a result
 
 **Unary Operators**
 ... like `&` or `*` (dereference) act on one operand.
@@ -706,16 +706,16 @@ An **expression** is formed from one or more *operands* and yields a result
 
 In C++, e.g. `5 + 3 * 1 / 2 + 2` is internally represented by `((5 + ((3*1)/2)) + 2)`, where the parenthesis override precedence and associativity. We can manually override these properties with parenthesis, if we'd like. However, knowing the *order of evaluation* can help us reduce the use of parenthesis. For example, in `g() + f() * h() - x()`, *precedence* guarantees that `f() * g()` are grouped together, and *associativity* guarantess that `g()` is added to the prodct of `f() * h()` and that in turn subtracted from `h()`.
 
->**Advice for Compound Expressions: 
+>**Advice for Compound Expressions:
 > When in doubt, manually set parenthesis
 > if you change the value of the operand, try not to use it in the same expression**
 
-TODO: “There are no guarantees as to the order in which these functions are called.” Y? 
+TODO: “There are no guarantees as to the order in which these functions are called.” Y?
 
 </br>
 <a name="ops"></a>
 
-### Arithmetic Operators 
+### Arithmetic Operators
 
 #### General
 
@@ -795,7 +795,7 @@ if (i == 1)
     do_something();
 ```
 <a name="todo"></a>
-“If we really cared whether val was the specific value 1, we should write the condition to test that case directly.” TODO HOW 
+“If we really cared whether val was the specific value 1, we should write the condition to test that case directly.” TODO HOW
 
 >**Warning: these literals should only be used to compare objects**
 
@@ -834,16 +834,16 @@ A **Reference** defines an alternate name for an object. A reference type "refer
 int ival = 1024;
 int &refVal = ival;		// refVal refers to another ival
 int &refVal2 = 2;		// error: initializer must be object
-double pi = 
+double pi =
 int &refVal2 = pi;		// error: wrong type
 ```
-Instead of copying the initializers value to refVal, we *bind* the reference to it's initializer. Additionally, 
+Instead of copying the initializers value to refVal, we *bind* the reference to it's initializer. Additionally,
 >“There is *no* way to rebind a reference to refer to a different object. Because there is no way to rebind a reference, references **must** be initialized.”
 
 ### *Pointer
 
 A **Pointer** is a compound type that "points to" another type. Unlike references, a pointer is an object in it's own right. This means
- 
+
  * no need to initialize
  * pointer can be assigned and copied
  * can point to *several different objects* over the a of it's lifetime
@@ -852,7 +852,7 @@ A pointer holds the address of another object, which enables us to get the *cont
 
 ```cpp
 int ival = 42;
-int *pval = &ival;		
+int *pval = &ival;
 int *rval = val;
 
 std::cout << pval << std::endl;		// will print address 0x...
@@ -866,7 +866,7 @@ int *uval = &ival;
 fval = uval;				// fval, uval refer to same address
 std::cout << *fval << std::endl;	// 42
 ```
-We can also compare two valid pointers of the same type: `==` and `!=` to type *bool*. They are equal if they hold the same address. Two objects hold the same address if 
+We can also compare two valid pointers of the same type: `==` and `!=` to type *bool*. They are equal if they hold the same address. Two objects hold the same address if
 
 * they are both null
 * they address the same object
@@ -899,7 +899,7 @@ if (!p2){}			// Would be used to check for nullptr
 ```
 
 >**Advice: Initialize all pointers
-> Unitialized pointers are a common source of runtime errors and are a nightmare to debug. There's no way for the compiler to distinguish a valid memory address from an invalid one. 
+> Unitialized pointers are a common source of runtime errors and are a nightmare to debug. There's no way for the compiler to distinguish a valid memory address from an invalid one.
 > Define pointers after object to which it should point is defined. For all other pointers, initialize them to nullptr**
 
 </br>
@@ -948,7 +948,7 @@ TODO
 
 TODO
 
-<a name="io"></a> 
+<a name="io"></a>
 
 ## IO
 
@@ -960,7 +960,7 @@ TODO
 * `clog`	: standard log
 * `endl`	: clears buffer and starts new line
 
-Istream becomes invalid if we hit an *end-of-file* or encounter an invalid input type, say string instead of int. 
+Istream becomes invalid if we hit an *end-of-file* or encounter an invalid input type, say string instead of int.
 *End of file* is system dependent: Ctrl-D on Unix or Ctrl-Z on Windows
 
 ### Examples
@@ -970,23 +970,117 @@ std::cout << "This is an output << std::endl;
 
 // continous reading of stream
 int val;
-while (std::cin >> val) 
+while (std::cin >> val)
 	sum += value;
 
 ```
 
 <a name="classes"></a>
 
-## Defining Our Own Data Structures: Classes 
+## Defining Our Own Data Structures: Classes
 
-Classes define custom data structures in C++. A class defines a type along with a collection of operations that are related to that type. These types can be used like built-in types when implemented correctly and smartly. 
+Classes define custom data structures in C++. A class defines a type along with a collection of operations that are related to that type. These types can be used like built-in types when implemented correctly and smartly.
 
 To use them, we need to know the name, where it is defined (typically the header) and what operations it supports.
 
+Fundamental ideas of classes are **data abstraction** and **encapsulation**. **Data abstraction** relies on the principles of *interface* and *implementation*, the former being the functionality a user can access, and the latter being the class members, and bodies of functions of the interface. The separation of the two enforces **encapsulation**, that hides the implementation from the user.
+
+### Defining abstract data types
+Look at this abstract example
+
+```cpp
+#include <string>
+
+class Computer {
+	public:
+		Computer();
+		~Computer();
+
+		void set_name(std::string n);
+		void set_year(int y);
+		void set_ram(double r);
+
+		std::string get_name();
+		int get_year();
+		double get_ram();
+
+	private:
+		std::string name;
+		int year;
+		double ram;
+}//Don't forget a ';' here!!
+
+Computer::Computer() {
+}
+
+Computer::~Computer() {
+}
+
+void Computer::set_name(std::string n) {
+	name = n;
+}
+
+void Computer::set_year(int y) {
+	year = y;
+}
+
+void Computer::set_ram(double r) {
+	ram = r;
+}
+
+std::string Computer::get_name() {
+	return name;
+}
+
+int Computer::get_year() {
+	return year;
+}
+
+double Computer::get_ram() {
+	return ram;
+}
+```
+
+You'll notice the *default constructor* `Computer()` and *default destructor* `~Computer`. You don't have to explicitely name them, but it's good style to do so. You have to explicitely state your constructor, if you want to initialize value, e.g.
+
+
+```cpp
+Computer::Computer() {
+    name = "Apple II";
+    year = 19something;
+    ram = 0.05;
+}
+```
+Additionally, we can *overload* the constructor, by declaring multiple different versions and using the appropriate one in main.
+
+You'll also notice the *access specifiers* `public` and `private`.
+
+**`public`** members are visible anywhere where the objects are visible.
+**`private`** members are only accessible from other members in the *same* class. By default, all members before another access specifier are private. e.g.
+
+```cpp
+class Computer {
+    std::string name;
+    int year;
+    double ram;
+
+    public:
+        Computer();
+        ~Computer();
+
+        void ...
+}
+```
+**`protected`** members are accessible from other members in the *same* class, but also from members their derived members.
+
+>**Note: Classes are usually denoted in Uppercase**
+
+`delete` keywork TODO
+
 ### Creating header files
 
-To ensure that our class definition is the same across multiple files, we tend to define classes in *header files*, usually abbreviated with `.h`, `.hpp`, `.H` or `.hxx`. 
-The most common method to make it safe to use the same header file in multiple locations is the *preprocessor*, a program that runs before the compiler and changes the source text of your program. Then the pp sees `#include` it replaces the statement with the contents of the specified header file. 
+To ensure that our class definition is the same across multiple files, we tend to define classes in *header files*, usually abbreviated with `.h`, `.hpp`, `.H` or `.hxx`.
+The most common method to make it safe to use the same header file in multiple locations is the *preprocessor*, a program that runs before the compiler and changes the source text of your program. Then the pp sees `#include` it replaces the statement with the contents of the specified header file.
 C++ programs also use the preprocessor to define *header guards* that shield from reimportation/re-replacement of `include`-statements, e.g.
 
 ```cpp
@@ -1014,15 +1108,15 @@ Let's say in main, by accident (or willful destructive urges), you `#include Sal
 ```cpp
 extern int i;				// declares but does not define
 int j = 0;				// declares and defines
-extern double pi = 3.1416;		// An extern that has an initializer is a definition -> overrides extern 
+extern double pi = 3.1416;		// An extern that has an initializer is a definition -> overrides extern
 ```
 
->**Note**: **Variables must be defined exactly once but can be declared many times.** 
+>**Note**: **Variables must be defined exactly once but can be declared many times.**
 
 ## Comments
 
 * `//`: single line comments
-* `/**/` : multi line comments, use asterix between comment pairs to visualize inner lines. 
+* `/**/` : multi line comments, use asterix between comment pairs to visualize inner lines.
 
 >*Warning*: Comment pairs do not nest, meaning comments in comments cause compiler errors
 
@@ -1031,20 +1125,21 @@ extern double pi = 3.1416;		// An extern that has an initializer is a definition
 **Statically typed**
 C++ is a statically typed lanuage, meaning that types are checked at compile time.
 
-**Preprocessor** 
+**Preprocessor**
 A program that runs before the compiler and changes the source text of your program.
 
 **Vectors Grow Efficiently**
-It is usually faster to declare a vector without an initializer, except when all elements in the vector have the same value. 
+It is usually faster to declare a vector without an initializer, except when all elements in the vector have the same value.
 
 **Generic Programming**
 “By routinely using iterators and !=, we don’t have to worry about the precise type of container we’re processing.” For example, in loop example [#3](#iterloop), you can see that we use `!=` rather than `<`. By using that and range/iterator based loops, we guarantee, that there can't be any buffer overflows.
 
-Excerpt From: Lippman, Stanley B. “C++ Primer, 5/e.” iBooks.  
+Excerpt From: Lippman, Stanley B. “C++ Primer, 5/e.” iBooks.
 
 ## Sources
 
-Mostly based on "C++ Primer 5th Ed." by Stanley Lippman a.o."
+* "C++ Primer 5th Ed." by Stanley Lippman a.o."
+* https://www.cprogramming.com/tutorial/lesson12.html
 
 ## TODO
 
@@ -1056,4 +1151,5 @@ Mostly based on "C++ Primer 5th Ed." by Stanley Lippman a.o."
 * Why does prefix behave differently in loops?
 * Bitwise Operators 4.8 and `size_of` 4.9
 * Automatic cast to double when two ints?
+* delete keyword Classes
 
